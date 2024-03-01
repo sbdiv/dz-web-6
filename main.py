@@ -4,11 +4,11 @@ import random
 
 fake = Faker()
 
-# З'єднання з базою даних (або створення нової, якщо не існує)
+
 conn = sqlite3.connect('university_database.db')
 cursor = conn.cursor()
 
-# Створення таблиці студентів
+
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS students (
         id INTEGER PRIMARY KEY,
@@ -18,7 +18,7 @@ cursor.execute('''
     )
 ''')
 
-# Створення таблиці груп
+
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS groups (
         id INTEGER PRIMARY KEY,
@@ -26,7 +26,7 @@ cursor.execute('''
     )
 ''')
 
-# Створення таблиці викладачів
+
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS teachers (
         id INTEGER PRIMARY KEY,
@@ -34,7 +34,7 @@ cursor.execute('''
     )
 ''')
 
-# Створення таблиці предметів
+
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS subjects (
         id INTEGER PRIMARY KEY,
@@ -44,7 +44,7 @@ cursor.execute('''
     )
 ''')
 
-# Створення таблиці оцінок
+
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS grades (
         id INTEGER PRIMARY KEY,
@@ -57,19 +57,19 @@ cursor.execute('''
     )
 ''')
 
-# Додавання даних до таблиці груп
+
 for i in range(3):
     cursor.execute('INSERT INTO groups (name) VALUES (?)', (fake.word(),))
 
-# Додавання даних до таблиці викладачів
+
 for i in range(3):
     cursor.execute('INSERT INTO teachers (name) VALUES (?)', (fake.name(),))
 
-# Додавання даних до таблиці предметів
+
 for i in range(5):
     cursor.execute('INSERT INTO subjects (name, teacher_id) VALUES (?, ?)', (fake.word(), random.randint(1, 3)))
 
-# Додавання даних до таблиці студентів та оцінок
+
 for i in range(30):
     group_id = random.randint(1, 3)
     cursor.execute('INSERT INTO students (name, group_id) VALUES (?, ?)', (fake.name(), group_id))
@@ -81,8 +81,8 @@ for i in range(30):
         cursor.execute('INSERT INTO grades (student_id, subject_id, grade, date_received) VALUES (?, ?, ?, ?)',
                        (student_id, subject_id, grade, date_received))
 
-# Збереження змін у базі даних
+
 conn.commit()
 
-# Закриття з'єднання з базою даних
+
 conn.close()
